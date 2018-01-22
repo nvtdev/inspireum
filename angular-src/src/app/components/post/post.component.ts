@@ -14,6 +14,9 @@ export class PostComponent implements OnInit {
   content: String;
   user: Object;
   private: Boolean;
+  newStory: Boolean;
+  storiesFromUser: Object;
+  storySelected: Object;
 
   constructor(
     private flashMessage:FlashMessagesService,
@@ -25,44 +28,94 @@ export class PostComponent implements OnInit {
   ngOnInit() {
     this.user = JSON.parse(localStorage.user);
     this.private = false;
+    this.newStory = true;
+    this.storyService.getAllStoriesFromCurrentUser(this.user['username']).subscribe(data => {
+      this.storiesFromUser = data.stories;
+    });
   }
 
   onStorySubmit() {
-    const story = {
-      title: this.title,
-      content: this.content,
-      author: this.user['username'],
-      private: this.private
-    }
-
-    if (!this.validateService.validateStoryTitle(story)){
-      this.flashMessage.show('Please specify a title',
-        {cssClass: 'alert-danger', timeout: 3000});
-      return false;
-    }
-
-    if (!this.validateService.validateStoryContent(story)){
-      this.flashMessage.show('Please add content',
-        {cssClass: 'alert-danger', timeout: 3000});
-      return false;
-    }
-
-    this.storyService.addStory(story).subscribe(data => {
-      if(data.success){
-        this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout: 3000});
-        console.log(data);
-        // this.router.navigate(['/']);
-      } else {
-        this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout: 3000});
-        console.log(data);
-        // this.router.navigate(['/post']);
+    console.log(this.newStory);
+    if (this.newStory) 
+    {
+      const story = {
+        title: this.title,
+        content: this.content,
+        author: this.user['username'],
+        private: this.private
       }
-    });
+  
+      if (!this.validateService.validateStoryTitle(story)){
+        this.flashMessage.show('Please specify a title',
+          {cssClass: 'alert-danger', timeout: 3000});
+        return false;
+      }
+  
+      if (!this.validateService.validateStoryContent(story)){
+        this.flashMessage.show('Please add content',
+          {cssClass: 'alert-danger', timeout: 3000});
+        return false;
+      }
+  
+      this.storyService.addStory(story).subscribe(data => {
+        if(data.success){
+          this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout: 3000});
+          console.log(data);
+          // this.router.navigate(['/']);
+        } else {
+          this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout: 3000});
+          console.log(data);
+          // this.router.navigate(['/post']);
+        }
+      });
+    } else {
+      
+      if (!this.validateService.validateStorySelected(this.storySelected)){
+        this.flashMessage.show('Please select story to update',
+          {cssClass: 'alert-danger', timeout: 3000});
+        return false;
+      }
+
+      if (!this.validateService.validateStoryContent(this)){
+        this.flashMessage.show('Please add content',
+          {cssClass: 'alert-danger', timeout: 3000});
+        return false;
+      }
+
+      const update = {
+        content: this.content,
+        author: this.user['username'],
+        private: this.private,
+        storyId: this.storySelected['_id']
+      }
+      
+      this.storyService.addUpdate(update).subscribe(data => {
+        if(data.success){
+          this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout: 3000});
+          console.log(data);
+          // this.router.navigate(['/']);
+        } else {
+          this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout: 3000});
+          console.log(data);
+          // this.router.navigate(['/post']);
+        }
+      });
+    }
+    
 
   }
 
   changePrivacy() {
     this.private = !this.private;
     console.log(this.private);
+  }
+
+  changeStatus(status) {
+    this.newStory = status;
+  }
+
+  storySelectChange(story) {
+    console.log(1111);
+    console.log(story);
   }
 }

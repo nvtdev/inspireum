@@ -35,4 +35,12 @@ export class ValidateService {
       return true;
     }
   }
+
+  validateStorySelected(storySelected) {
+    if (storySelected == undefined) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

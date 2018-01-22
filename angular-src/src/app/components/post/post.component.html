@@ -1,13 +1,29 @@
+
 <div class="page-header">
-    <h2>Post your story</h2>
+    <div class="post-status" *ngIf="newStory; else elseStatus">
+        <div class="post-status-option active" (click)="changeStatus(true)">New Story</div>
+        <div class="post-status-option" (click)="changeStatus(false)">Update</div>
+    </div>
+    <ng-template #elseStatus>
+        <div class="post-status-option" (click)="changeStatus(true)">New Story</div>
+        <div class="post-status-option active" (click)="changeStatus(false)">Update</div>
+    </ng-template>
     <span *ngIf="!private" data-toggle="tooltip" title="Public post" class="glyphicon glyphicon-globe icn-privacy public" aria-hidden="true" (click)="changePrivacy()"></span>
-    <span *ngIf="private" data-toggle="tooltip" title="Private post" class="glyphicon glyphicon-globe icn-privacy" aria-hidden="true" (click)="changePrivacy()"></span>
-  </div>
+    <span *ngIf="private" data-toggle="tooltip" title="Private post" class="glyphicon glyphicon-globe icn-privacy" aria-hidden="true" (click)="changePrivacy()"></span> 
+</div>
   <form (submit)="onStorySubmit()">
-    <div class="form-group">
+    <div class="form-group" *ngIf="newStory; else elseStorySelect">
       <label>Title</label>
       <input type="text" [(ngModel)]="title" name="title" class="form-control">
     </div>
+    <ng-template #elseStorySelect>
+        <div class="form-group">
+            <label for="sel1">Select story to update:</label>
+            <select class="form-control" id="sel1" [(ngModel)]="storySelected" [ngModelOptions]="{standalone: true}">
+              <option *ngFor="let story of storiesFromUser" [ngValue]="story" (click)="storySelectChange(story)">{{story.title}}</option>
+            </select>
+          </div>
+    </ng-template>
     <div class="form-group">
       <label>Content</label>
       <textarea class="form-control" rows="10" [(ngModel)]="content" name="content" ></textarea>

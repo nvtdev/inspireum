@@ -18,12 +18,7 @@ mongoose.connection.on("error", err => {
 
 const app = express();
 
-const users = require("./routes/users");
-const stories = require("./routes/stories");
-
 const port = 3000;
-
-app.use(cors());
 
 // Set static folder
 app.use(express.static(path.join(__dirname, "public")));
@@ -35,8 +30,17 @@ app.use(passport.session());
 
 require("./config/passport")(passport);
 
+// Routes - begin
+app.use(cors());
+
+const users = require("./routes/users");
+const stories = require("./routes/stories");
+const updates = require("./routes/updates");
+
 app.use("/users", users);
 app.use("/stories", stories);
+app.use("/updates", updates);
+// Routes - End
 
 app.get("/", (req, res) => {
   res.send("Invalid endpoint.");

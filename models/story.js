@@ -28,9 +28,20 @@ const StorySchema = mongoose.Schema({
 const Story = (module.exports = mongoose.model("Story", StorySchema));
 
 module.exports.getStoriesByAuthor = function(author, callback) {
-    const query = { author: author };
-    Story.find(query, callback);
+  Story.find({
+    $and:
+    [
+      { privacy: 'Public' } ,
+      { author: username }
+    ]
+  }, callback);
   };
+
+  module.exports.getAllStoriesFromCurrentUser = function(username, callback) {
+    Story.find({
+      author: username
+    }, callback);
+  }
 
 module.exports.addStory = function(story, callback) {
     story.save(callback);
