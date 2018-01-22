@@ -11,17 +11,22 @@ import { RegisterComponent } from "./components/register/register.component";
 import { HomeComponent } from "./components/home/home.component";
 import { FeedComponent } from "./components/feed/feed.component";
 import { ProfileComponent } from "./components/profile/profile.component";
+import { PostComponent } from './components/post/post.component';
 
 import { ValidateService } from "./services/validate.service";
 import { AuthService } from "./services/auth.service";
+import { StoryService } from "./services/story.service";
+
 import { FlashMessagesModule } from "angular2-flash-messages";
 import { AuthGuard } from "./guards/auth.guard";
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 const appRoutes: Routes = [
   { path: "", component: HomeComponent },
   { path: "register", component: RegisterComponent },
   { path: "login", component: LoginComponent },
-  { path: "profile", component: ProfileComponent, canActivate: [AuthGuard] }
+  { path: "profile", component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: "post", component: PostComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
@@ -32,7 +37,9 @@ const appRoutes: Routes = [
     RegisterComponent,
     HomeComponent,
     FeedComponent,
-    ProfileComponent
+    ProfileComponent,
+    SidebarComponent,
+    PostComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +48,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     FlashMessagesModule.forRoot()
   ],
-  providers: [ValidateService, AuthService, AuthGuard],
+  providers: [ValidateService, AuthService, StoryService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

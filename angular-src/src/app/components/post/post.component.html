@@ -1,0 +1,24 @@
+<div class="page-header">
+    <h2>Post your story</h2>
+    <span *ngIf="!private" data-toggle="tooltip" title="Public post" class="glyphicon glyphicon-globe icn-privacy public" aria-hidden="true" (click)="changePrivacy()"></span>
+    <span *ngIf="private" data-toggle="tooltip" title="Private post" class="glyphicon glyphicon-globe icn-privacy" aria-hidden="true" (click)="changePrivacy()"></span>
+  </div>
+  <form (submit)="onStorySubmit()">
+    <div class="form-group">
+      <label>Title</label>
+      <input type="text" [(ngModel)]="title" name="title" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>Content</label>
+      <textarea class="form-control" rows="10" [(ngModel)]="content" name="content" ></textarea>
+    </div>
+    <!-- <div class="form-group" id="emotions-form">
+      <span id="fear" (click)="addEmotion($event)" class="label label-default emotion-label">Fear</span>
+      <span id="joy" (click)="addEmotion($event)" class="label label-primary emotion-label">Joy</span>
+      <span id="trust" (click)="addEmotion($event)" class="label label-success emotion-label">Trust</span>
+      <span id="anticipation" (click)="addEmotion($event)" class="label label-info emotion-label">Anticipation</span>
+      <span id="sadness" (click)="addEmotion($event)" class="label label-warning emotion-label">Sadness</span>
+      <span id="anger" (click)="addEmotion($event)" class="label label-danger emotion-label">Anger</span>
+    </div> -->
+    <input type="submit" class="btn btn-primary" value="Submit">
+  </form>
