@@ -31,7 +31,7 @@ module.exports.getStoriesByAuthor = function(author, callback) {
   Story.find({
     $and:
     [
-      { privacy: 'Public' } ,
+      { private: false } ,
       { author: username }
     ]
   }, callback);
@@ -41,6 +41,23 @@ module.exports.getStoriesByAuthor = function(author, callback) {
     Story.find({
       author: username
     }, callback);
+  }
+
+  module.exports.getAllStories = function (loggedUser, callback) {
+    if (loggedUser != '') 
+    {
+      Story.find({
+        $or:
+        [
+          { private: false } ,
+          { author: loggedUser }
+        ]
+      }, callback);
+    } else {
+      Story.find({
+        private: false
+      }, callback);
+    }
   }
 
 module.exports.addStory = function(story, callback) {

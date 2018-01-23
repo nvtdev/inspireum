@@ -43,6 +43,17 @@ router.get('/allFromUser', (req, res, next) => {
   });
 });
 
+router.get('/all', (req, res, next) => {
+  let loggedUser = req.headers.loggeduser;
+  Story.getAllStories(loggedUser, (err, stories) => {
+    if (err) {
+      res.json({success: false, msg:'Failed to load stories.'});
+    } else {
+      res.json({success: true, stories: stories});
+    }
+  });
+});
+
 // Get all stories (including private) from user
 router.get('/allFromCurrentUser', (req, res, next) => {
   let username = req.headers.username;
@@ -54,5 +65,5 @@ router.get('/allFromCurrentUser', (req, res, next) => {
     }
   });
 });
-  
+
 module.exports = router;

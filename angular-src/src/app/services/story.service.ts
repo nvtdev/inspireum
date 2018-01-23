@@ -28,6 +28,24 @@ export class StoryService {
       .map(res => res.json());
   }
 
+  getAllStories(loggedUser){
+    let headers = new Headers();
+    headers.append('Content-Type','application/json');
+    headers.append('loggeduser', loggedUser);
+    let ep = this.prepEndpoint('stories/all');
+    return this.http.get(ep, {headers: headers})
+      .map(res => res.json());
+  }
+
+  getAllUpdates(loggedUser){
+    let headers = new Headers();
+    headers.append('Content-Type','application/json');
+    headers.append('loggeduser', loggedUser);
+    let ep = this.prepEndpoint('updates/all');
+    return this.http.get(ep, {headers: headers})
+      .map(res => res.json());
+  }
+
   getAllStoriesFromUser(username){
     let headers = new Headers();
     headers.append('Content-Type','application/json');
