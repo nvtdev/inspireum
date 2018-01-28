@@ -1,0 +1,8 @@
+<div class="tags-container">
+  <div class="tags-list">
+    <div class="tags-entry" (click)="onTagClick(tag)" *ngFor="let tag of tags" data-toggle="tooltip" title="Click to remove">
+      {{tag}}
+    </div>
+  </div>
+  <input type="text" class="form-control tags-input" [(ngModel)]="currentTag" (focusout)="onFocusOut()">
+</div>

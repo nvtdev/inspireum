@@ -11,15 +11,18 @@ import { RegisterComponent } from "./components/register/register.component";
 import { HomeComponent } from "./components/home/home.component";
 import { FeedComponent } from "./components/feed/feed.component";
 import { ProfileComponent } from "./components/profile/profile.component";
-import { PostComponent } from './components/post/post.component';
+import { PostComponent } from "./components/post/post.component";
 
 import { ValidateService } from "./services/validate.service";
 import { AuthService } from "./services/auth.service";
 import { StoryService } from "./services/story.service";
+import { MainService } from "./services/main.service";
 
 import { FlashMessagesModule } from "angular2-flash-messages";
 import { AuthGuard } from "./guards/auth.guard";
-import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { SidebarComponent } from "./components/sidebar/sidebar.component";
+
+import { TagsComponent } from "./components/tags/tags.component";
 
 const appRoutes: Routes = [
   { path: "", component: HomeComponent },
@@ -39,7 +42,8 @@ const appRoutes: Routes = [
     FeedComponent,
     ProfileComponent,
     SidebarComponent,
-    PostComponent
+    PostComponent,
+    TagsComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +52,13 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     FlashMessagesModule.forRoot()
   ],
-  providers: [ValidateService, AuthService, StoryService, AuthGuard],
+  providers: [
+    ValidateService,
+    AuthService,
+    StoryService,
+    MainService,
+    AuthGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -1,0 +1,35 @@
+.story-entry {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid lightgrey;
+}
+
+.story-header {
+  margin-bottom: 10px;
+}
+
+.story-title {
+  display: inline;
+}
+
+.story-author {
+  display: inline;
+  font-size: 22px;
+  color: darkgrey;
+  margin-left: 10px;
+}
+
+.story-tags {
+  display: inline;
+  float: right;
+}
+
+.story-tags-entry {
+  display: inline;
+  padding: 5px;
+  font-size: 16px;
+  background: lightgrey;
+  margin-right: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}

@@ -1,0 +1,18 @@
+.tags-input {
+  width: 15%;
+  display: inline;
+}
+
+.tags-list {
+  display: inline;
+}
+
+.tags-entry {
+  display: inline;
+  padding: 10px;
+  font-size: 16px;
+  background: lightgrey;
+  margin-right: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}

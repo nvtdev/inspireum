@@ -1,8 +1,17 @@
 <div class="col-xs-12 col-sm-9" *ngIf="allStories">
-  <div class="row" *ngFor="let story of allStories">
-    <h2>{{story.title}}</h2> | {{story.author}}
+  <div class="row story-entry" *ngFor="let story of allStories">
+    <div class="story-header">
+      <h2 class="story-title">{{story.title}}</h2>
+      <div class="story-author">by {{story.author}}</div>
+      <div class="story-tags" *ngIf="story.tags != ''">
+        <div class="story-tags-entry" *ngFor="let tag of story.tags.split(',')" (click)="filterStories(tag)">
+          {{tag}}
+        </div>
+      </div>
+    </div>
     <p>
-      {{story.content}}
+      {{story.content.substr(0, 500)}} ..
+      <a href="">Read full</a>
     </p>
   </div>
   <!--/row-->
