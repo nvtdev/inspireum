@@ -33,3 +33,23 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+.bnt-post .glyphicon {
+  margin-right: 10px;
+}
+
+.bnt-post {
+  margin-bottom: 10px;
+}
+
+.filter-tags-entry {
+  display: initial;
+  padding: 5px;
+  font-size: 16px;
+  background: lightgrey;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+

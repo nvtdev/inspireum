@@ -12,8 +12,10 @@ import { Router } from "@angular/router";
 export class FeedComponent implements OnInit {
   user: Object;
   allStories: Array<Object>;
+  originalStories: Array<Object>;
   allUpdates: Array<Object>;
   filterTag: String;
+  filterTags: Array<String>;
 
   constructor(
     private flashMessage: FlashMessagesService,
@@ -34,23 +36,45 @@ export class FeedComponent implements OnInit {
     //   });
     // }
     this.filterTag = "";
+    this.filterTags = [];
     if (localStorage.user) this.user = JSON.parse(localStorage.user);
     let loggedUser = this.user ? this.user["username"] : "";
     this.storyService.getAllStories(loggedUser).subscribe(data => {
       this.allStories = data.stories;
+      this.originalStories = this.allStories;
     });
     this.storyService.getAllUpdates(loggedUser).subscribe(data => {
       this.allUpdates = data.updates;
     });
   }
 
-  filterStories(tag) {
-    let filteredStories = [];
-    for (let story of this.allStories) {
-      if (story["tags"].includes(tag)) filteredStories.push(story);
+  addFilterTag(tag) {
+    if (!this.filterTags.includes(tag))
+      this.filterTags.push(tag);
+    this.filterStories();
+  }
+
+  filterStories() {
+    if (this.filterTags.length == 0)
+    {
+      this.allStories = this.originalStories;
+    } else {
+      let filteredStories = [];
+      for (let story of this.allStories) {
+        for (let tag of this.filterTags) {
+          if (story["tags"].includes(tag)) {
+            filteredStories.push(story);
+            break;
+          } 
+        }
+      }
+      this.allStories = filteredStories;
     }
-    this.allStories = filteredStories;
-    if (!this.mainService.filterTags.includes(tag))
-      this.mainService.filterTags.push(tag);
+  }
+
+  removeFilterTag(tag) {
+    let index = this.filterTags.indexOf(tag, 0);
+    if (index > -1) this.filterTags.splice(index, 1);
+    this.filterStories();
   }
 }

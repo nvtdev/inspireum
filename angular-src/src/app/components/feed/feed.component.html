@@ -4,7 +4,7 @@
       <h2 class="story-title">{{story.title}}</h2>
       <div class="story-author">by {{story.author}}</div>
       <div class="story-tags" *ngIf="story.tags != ''">
-        <div class="story-tags-entry" *ngFor="let tag of story.tags.split(',')" (click)="filterStories(tag)">
+        <div class="story-tags-entry" *ngFor="let tag of story.tags.split(',')" (click)="addFilterTag(tag)">
           {{tag}}
         </div>
       </div>
@@ -17,3 +17,14 @@
   <!--/row-->
 </div>
 <!--/.col-xs-12.col-sm-9-->
+
+<!-- Sidebar -->
+<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
+  <!-- Standard button -->
+  <button [routerLink]="['/post']" type="button" class="btn btn-default btn-lg btn-block bnt-post">
+    <span class="glyphicon glyphicon-send" aria-hidden="true"></span>Post</button>
+  <div class="filter-tags-entry" *ngFor="let tag of filterTags" (click)="removeFilterTag(tag)">
+    {{tag}}
+  </div>
+</div>
+<!-- Sidebar -->
