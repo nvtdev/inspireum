@@ -16,6 +16,7 @@ export class FeedComponent implements OnInit {
   allUpdates: Array<Object>;
   filterTag: String;
   filterTags: Array<String>;
+  searchKey: String;
 
   constructor(
     private flashMessage: FlashMessagesService,
@@ -37,6 +38,7 @@ export class FeedComponent implements OnInit {
     // }
     this.filterTag = "";
     this.filterTags = [];
+    this.searchKey = "";
     if (localStorage.user) this.user = JSON.parse(localStorage.user);
     let loggedUser = this.user ? this.user["username"] : "";
     this.storyService.getAllStories(loggedUser).subscribe(data => {
@@ -51,30 +53,56 @@ export class FeedComponent implements OnInit {
   addFilterTag(tag) {
     if (!this.filterTags.includes(tag))
       this.filterTags.push(tag);
-    this.filterStories();
+    this.filterStories('tag');
   }
 
-  filterStories() {
-    if (this.filterTags.length == 0)
+  filterStories(filterBy) {
+    let filteredStories = [],
+        searchKey = this.searchKey;
+
+    
+    switch (filterBy) 
     {
-      this.allStories = this.originalStories;
-    } else {
-      let filteredStories = [];
-      for (let story of this.allStories) {
-        for (let tag of this.filterTags) {
-          if (story["tags"].includes(tag)) {
-            filteredStories.push(story);
-            break;
-          } 
+      case 'tag':
+        if (this.filterTags.length == 0)
+        {
+          this.allStories = this.originalStories;
+        } else {
+          for (let story of this.allStories) {
+            for (let tag of this.filterTags) {
+              if (story["tags"].includes(tag)) {
+                filteredStories.push(story);
+                break;
+              } 
+            }
+          }
+          this.allStories = filteredStories;
         }
-      }
-      this.allStories = filteredStories;
+        break;
+
+      case 'key':
+        for (let story of this.allStories) {
+          Object.keys(story).forEach(function(key) {
+            if (story[key].toString().includes(searchKey))
+              filteredStories.push(story);
+          });
+        }
+        this.allStories = filteredStories;
+        break;
     }
+    
   }
 
   removeFilterTag(tag) {
     let index = this.filterTags.indexOf(tag, 0);
     if (index > -1) this.filterTags.splice(index, 1);
-    this.filterStories();
+    this.filterStories('tag');
+  }
+
+  onSearchChange() {
+    if (this.searchKey.length > 2) 
+      this.filterStories('key');
+    else
+      this.allStories = this.originalStories;
   }
 }

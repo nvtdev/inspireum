@@ -42,6 +42,10 @@
   margin-bottom: 10px;
 }
 
+.filter-tags {
+  margin-top: 10px;
+}
+
 .filter-tags-entry {
   display: initial;
   padding: 5px;

@@ -22,9 +22,16 @@
 <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
   <!-- Standard button -->
   <button [routerLink]="['/post']" type="button" class="btn btn-default btn-lg btn-block bnt-post">
-    <span class="glyphicon glyphicon-send" aria-hidden="true"></span>Post</button>
-  <div class="filter-tags-entry" *ngFor="let tag of filterTags" (click)="removeFilterTag(tag)">
-    {{tag}}
+  <span class="glyphicon glyphicon-send" aria-hidden="true"></span>Post</button>
+  <div class="input-group">
+    <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+    <input id="email" type="text" class="form-control" [(ngModel)]="searchKey" (keyup)="onSearchChange()" placeholder="Search..">
   </div>
+  <div class="filter-tags">
+    <div class="filter-tags-entry" *ngFor="let tag of filterTags" (click)="removeFilterTag(tag)">
+      {{tag}}
+    </div>
+  </div>
+  
 </div>
 <!-- Sidebar -->
