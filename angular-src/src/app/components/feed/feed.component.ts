@@ -47,6 +47,7 @@ export class FeedComponent implements OnInit {
     });
     this.storyService.getAllUpdates(loggedUser).subscribe(data => {
       this.allUpdates = data.updates;
+      console.log(this.allUpdates);
     });
   }
 

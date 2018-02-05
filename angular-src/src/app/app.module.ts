@@ -23,6 +23,7 @@ import { AuthGuard } from "./guards/auth.guard";
 import { SidebarComponent } from "./components/sidebar/sidebar.component";
 
 import { TagsComponent } from "./components/tags/tags.component";
+import { StoryComponent } from './components/story/story.component';
 
 const appRoutes: Routes = [
   { path: "", component: HomeComponent },
@@ -43,7 +44,8 @@ const appRoutes: Routes = [
     ProfileComponent,
     SidebarComponent,
     PostComponent,
-    TagsComponent
+    TagsComponent,
+    StoryComponent
   ],
   imports: [
     BrowserModule,

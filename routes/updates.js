@@ -32,7 +32,7 @@ router.post("/post", (req, res, next) => {
 
 router.get("/all", (req, res, next) => {
   let loggedUser = req.headers.loggeduser;
-  Story.getAllUpdates(loggedUser, (err, updates) => {
+  Update.getAllUpdates(loggedUser, (err, updates) => {
     if (err) {
       res.json({ success: false, msg: "Failed to load updates." });
     } else {
