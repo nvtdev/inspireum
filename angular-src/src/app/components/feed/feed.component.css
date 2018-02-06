@@ -19,8 +19,28 @@
   margin-left: 10px;
 }
 
+.story-navigation {
+  display: inline;
+  float: left;
+  color: lightgrey;
+  font-size: 18px;
+}
+
+.story-navigation span {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.story-navigation span.active {
+  color: black;
+}
+
 .story-tags {
   display: inline;
+  float: right;
+}
+
+.story-tags {
   float: right;
 }
 

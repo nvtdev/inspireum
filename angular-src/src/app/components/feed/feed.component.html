@@ -1,18 +1,26 @@
 <div class="col-xs-12 col-sm-9" *ngIf="allStories">
-  <div class="row story-entry" *ngFor="let story of allStories">
+  <div class="row story-entry" *ngFor="let story of feedData">
     <div class="story-header">
       <h2 class="story-title">{{story.title}}</h2>
       <div class="story-author">by {{story.author}}</div>
+      
+    </div>
+    <p>
+      {{story.content.substr(0, 500)}} ..
+      <a href="">Read full</a>
+    </p>
+    <div class="story-controls">
+      <div class="story-navigation" *ngIf="story.storyId">
+        <span class="glyphicon glyphicon-chevron-left active" aria-hidden="true" (click)="triggerNavigation(story._id, story.storyId, 'back')"></span>
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" (click)="triggerNavigation(story._id, story.storyId, 'forward')"></span>
+      </div>
       <div class="story-tags" *ngIf="story.tags != ''">
         <div class="story-tags-entry" *ngFor="let tag of story.tags.split(',')" (click)="addFilterTag(tag)">
           {{tag}}
         </div>
       </div>
     </div>
-    <p>
-      {{story.content.substr(0, 500)}} ..
-      <a href="">Read full</a>
-    </p>
+    
   </div>
   <!--/row-->
 </div>

@@ -14,6 +14,7 @@ export class FeedComponent implements OnInit {
   allStories: Array<Object>;
   originalStories: Array<Object>;
   allUpdates: Array<Object>;
+  feedData: Array<Object>;
   filterTag: String;
   filterTags: Array<String>;
   searchKey: String;
@@ -39,16 +40,45 @@ export class FeedComponent implements OnInit {
     this.filterTag = "";
     this.filterTags = [];
     this.searchKey = "";
+    this.feedData = [];
     if (localStorage.user) this.user = JSON.parse(localStorage.user);
     let loggedUser = this.user ? this.user["username"] : "";
     this.storyService.getAllStories(loggedUser).subscribe(data => {
       this.allStories = data.stories;
       this.originalStories = this.allStories;
+      console.log(this.allStories);
+
+      this.storyService.getAllUpdates(loggedUser).subscribe(data => {
+        this.allUpdates = data.updates;
+        console.log(this.allUpdates);
+
+        this.buildFeedData();
+      });
     });
-    this.storyService.getAllUpdates(loggedUser).subscribe(data => {
-      this.allUpdates = data.updates;
-      console.log(this.allUpdates);
-    });
+  }
+
+  buildFeedData () {
+    for (let story of this.allStories)
+    {
+      let latestUpdate = null;
+
+      for (let update of this.allUpdates) 
+      {
+        if (update['storyId'] == story['_id'])
+        {
+          latestUpdate = update,
+          latestUpdate.title = story['title'],
+          latestUpdate.author = story['author'],
+          latestUpdate.tags = story['tags'];
+        }
+      }
+
+      if (latestUpdate)
+        this.feedData.push(latestUpdate)
+      else
+        this.feedData.push(story);
+    }
+    console.log(this.feedData);
   }
 
   addFilterTag(tag) {
@@ -105,5 +135,43 @@ export class FeedComponent implements OnInit {
       this.filterStories('key');
     else
       this.allStories = this.originalStories;
+  }
+
+  triggerNavigation (updateId, storyId, direction) {
+    let filteredUpdates = this.allUpdates.filter(update => update['storyId'] === storyId),
+        currentUpdateIndex = filteredUpdates.findIndex(update => update['_id'] == updateId),
+        associatedStory = this.allStories.filter(story => story['_id'] === storyId)[0],
+        navigatedUpdate = null;
+
+    if (direction == 'back')
+    {
+      if (filteredUpdates[currentUpdateIndex - 1])
+        navigatedUpdate = filteredUpdates[currentUpdateIndex - 1];
+      else
+        navigatedUpdate = associatedStory;
+    } 
+    else 
+    {
+      if (filteredUpdates[currentUpdateIndex + 1])
+        navigatedUpdate = filteredUpdates[currentUpdateIndex + 1];
+    }
+
+    // if (filteredUpdates.length > 1)
+    // {
+    //   console.log(filteredUpdates[currentUpdateIndex-1])
+    //   if (currentUpdateIndex == filteredUpdates.length - 1) // latest update
+    //   {
+    //     let currentUpdateIndexInFeed = this.feedData.findIndex(update => update['_id'] == updateId);
+        
+    //   }
+    // }
+
+    if (navigatedUpdate)
+    {
+      let currentUpdateIndexInFeed = this.feedData.findIndex(update => update['_id'] == updateId);
+      this.feedData[currentUpdateIndexInFeed] = navigatedUpdate;
+    }
+    
+    console.log(navigatedUpdate);
   }
 }
