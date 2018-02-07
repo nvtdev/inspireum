@@ -58,6 +58,8 @@ export class FeedComponent implements OnInit {
   }
 
   buildFeedData () {
+    this.feedData = [];
+
     for (let story of this.allStories)
     {
       let latestUpdate = null;
@@ -69,7 +71,8 @@ export class FeedComponent implements OnInit {
           latestUpdate = update,
           latestUpdate.title = story['title'],
           latestUpdate.author = story['author'],
-          latestUpdate.tags = story['tags'];
+          latestUpdate.tags = story['tags'],
+          latestUpdate.activeBackNavigation = true;
         }
       }
 
@@ -78,6 +81,7 @@ export class FeedComponent implements OnInit {
       else
         this.feedData.push(story);
     }
+
     console.log(this.feedData);
   }
 
@@ -122,6 +126,7 @@ export class FeedComponent implements OnInit {
         break;
     }
     
+    this.buildFeedData();
   }
 
   removeFilterTag(tag) {
@@ -135,6 +140,8 @@ export class FeedComponent implements OnInit {
       this.filterStories('key');
     else
       this.allStories = this.originalStories;
+
+    this.buildFeedData();
   }
 
   triggerNavigation (updateId, storyId, direction) {
@@ -148,7 +155,11 @@ export class FeedComponent implements OnInit {
       if (filteredUpdates[currentUpdateIndex - 1])
         navigatedUpdate = filteredUpdates[currentUpdateIndex - 1];
       else
+      {
         navigatedUpdate = associatedStory;
+        // the line below is needed so that navigation doesn't disappear once user reaches OG story post
+        navigatedUpdate.storyId = associatedStory['_id'];
+      }
     } 
     else 
     {
@@ -156,15 +167,14 @@ export class FeedComponent implements OnInit {
         navigatedUpdate = filteredUpdates[currentUpdateIndex + 1];
     }
 
-    // if (filteredUpdates.length > 1)
-    // {
-    //   console.log(filteredUpdates[currentUpdateIndex-1])
-    //   if (currentUpdateIndex == filteredUpdates.length - 1) // latest update
-    //   {
-    //     let currentUpdateIndexInFeed = this.feedData.findIndex(update => update['_id'] == updateId);
-        
-    //   }
-    // }
+    // check for back arrow
+    if (filteredUpdates[currentUpdateIndex - 1])
+      navigatedUpdate.activeBackNavigation = true;
+
+    // check for forward arrow
+    let navigatedUpdateIndex = filteredUpdates.findIndex(update => update['_id'] == navigatedUpdate._id);
+    if (filteredUpdates[navigatedUpdateIndex + 1])
+      navigatedUpdate.activeForwardNavigation = true;
 
     if (navigatedUpdate)
     {

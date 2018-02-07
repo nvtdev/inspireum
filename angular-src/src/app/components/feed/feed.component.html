@@ -1,6 +1,6 @@
 <div class="col-xs-12 col-sm-9" *ngIf="allStories">
   <div class="row story-entry" *ngFor="let story of feedData">
-    <div class="story-header">
+    <div class="stomkkjkry-header">
       <h2 class="story-title">{{story.title}}</h2>
       <div class="story-author">by {{story.author}}</div>
       
@@ -11,8 +11,10 @@
     </p>
     <div class="story-controls">
       <div class="story-navigation" *ngIf="story.storyId">
-        <span class="glyphicon glyphicon-chevron-left active" aria-hidden="true" (click)="triggerNavigation(story._id, story.storyId, 'back')"></span>
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" (click)="triggerNavigation(story._id, story.storyId, 'forward')"></span>
+        <span *ngIf="story.activeBackNavigation" class="glyphicon glyphicon-chevron-left active" aria-hidden="true" (click)="triggerNavigation(story._id, story.storyId, 'back')"></span>
+        <span *ngIf="!story.activeBackNavigation" class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span *ngIf="story.activeForwardNavigation" class="glyphicon glyphicon-chevron-right active" aria-hidden="true" (click)="triggerNavigation(story._id, story.storyId, 'forward')"></span>
+        <span *ngIf="!story.activeForwardNavigation" class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
       </div>
       <div class="story-tags" *ngIf="story.tags != ''">
         <div class="story-tags-entry" *ngFor="let tag of story.tags.split(',')" (click)="addFilterTag(tag)">
