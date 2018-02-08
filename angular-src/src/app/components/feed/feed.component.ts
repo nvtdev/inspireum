@@ -41,6 +41,7 @@ export class FeedComponent implements OnInit {
     this.filterTags = [];
     this.searchKey = "";
     this.feedData = [];
+
     if (localStorage.user) this.user = JSON.parse(localStorage.user);
     let loggedUser = this.user ? this.user["username"] : "";
     this.storyService.getAllStories(loggedUser).subscribe(data => {

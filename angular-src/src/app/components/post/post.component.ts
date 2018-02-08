@@ -17,6 +17,9 @@ export class PostComponent implements OnInit {
   newStory: Boolean;
   storiesFromUser: Object;
   storySelected: Object;
+  timeframe: boolean;
+  timeframeValue: Number;
+  timeframeUnit: String;
 
   constructor(
     private flashMessage: FlashMessagesService,
@@ -29,6 +32,8 @@ export class PostComponent implements OnInit {
     this.user = JSON.parse(localStorage.user);
     this.private = false;
     this.newStory = true;
+    this.timeframe = false;
+    this.timeframeUnit = "";
     this.storyService
       .getAllStoriesFromCurrentUser(this.user["username"])
       .subscribe(data => {
@@ -38,6 +43,8 @@ export class PostComponent implements OnInit {
 
   onStorySubmit() {
     console.log(this.newStory);
+    console.log(this.timeframeUnit);
+    return;
     if (this.newStory) {
       const story = {
         title: this.title,
@@ -137,5 +144,9 @@ export class PostComponent implements OnInit {
   storySelectChange(story) {
     console.log(1111);
     console.log(story);
+  }
+
+  addTimeframe () {
+    console.log('test');
   }
 }

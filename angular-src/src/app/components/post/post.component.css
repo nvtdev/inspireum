@@ -109,3 +109,7 @@
   .post-status-option.active {
     color: black;
   }
+
+  .timeframe-input {
+    width: 60px;
+  }

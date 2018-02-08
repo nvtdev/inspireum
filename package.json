@@ -8,12 +8,15 @@
     "start": "node app"
   },
   "dependencies": {
-    "express": "*",
-    "mongoose": "*",
+    "@angular/animations": "^5.2.4",
+    "@angular/cdk": "^5.2.0",
+    "@angular/material": "^5.2.0",
     "bcryptjs": "*",
-    "cors": "*",
-    "jsonwebtoken": "",
     "body-parser": "*",
+    "cors": "*",
+    "express": "*",
+    "jsonwebtoken": "",
+    "mongoose": "*",
     "passport": "*",
     "passport-jwt": "*"
   },

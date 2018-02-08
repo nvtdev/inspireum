@@ -25,6 +25,8 @@ import { SidebarComponent } from "./components/sidebar/sidebar.component";
 import { TagsComponent } from "./components/tags/tags.component";
 import { StoryComponent } from './components/story/story.component';
 
+import {MatButtonModule, MatCheckboxModule} from '@angular/material';
+
 const appRoutes: Routes = [
   { path: "", component: HomeComponent },
   { path: "register", component: RegisterComponent },
@@ -52,7 +54,9 @@ const appRoutes: Routes = [
     FormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes),
-    FlashMessagesModule.forRoot()
+    FlashMessagesModule.forRoot(),
+    MatButtonModule, 
+    MatCheckboxModule
   ],
   providers: [
     ValidateService,
