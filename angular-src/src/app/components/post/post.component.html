@@ -15,18 +15,22 @@
 <form (submit)="onStorySubmit()">
   <div *ngIf="newStory; else elseStorySelect">
     <div class="form-group">
-        <label>Title</label>
-        <input type="text" [(ngModel)]="title" name="title" class="form-control">
+      <label>Title</label>
+      <input type="text" [(ngModel)]="title" name="title" class="form-control">
     </div>
     <div class="form-group">
-        <input id="checkBox" type="checkbox" name="timeframe" [(ngModel)]="timeframe"> <label>Add Timeframe</label>
-        <div *ngIf="timeframe">
-            <input onkeypress='return event.charCode >= 48 && event.charCode <= 57' type="number" [(ngModel)]="timeframeValue" name="timeframeValue" class="form-control timeframe-input">
-            <input type="radio" [(ngModel)]="timeframeUnit" [value]="days">Days
-            <input type="radio" [(ngModel)]="timeframeUnit" [value]="weeks">Weeks
-            <input type="radio" [(ngModel)]="timeframeUnit" [value]="months">Months
-            <input type="radio" [(ngModel)]="timeframeUnit" [value]="years">Years
-        </div>
+      <input id="checkBox" type="checkbox" name="timeframe" [(ngModel)]="timeframe">
+      <label>Add Timeframe</label>
+      <div *ngIf="timeframe">
+        <input onkeypress='return event.charCode >= 48 && event.charCode <= 57' type="number" [(ngModel)]="timeframeValue" name="timeframeValue"
+          class="form-control timeframe-input" min="1">
+        <select class="form-control timeframe-unit" [(ngModel)]="timeframeUnit" name="timeframeUnit">
+          <option value="days">Days
+            <option value="weeks">Weeks
+              <option value="months">Months
+                <option value="years">Years
+        </select>
+      </div>
     </div>
   </div>
   <ng-template #elseStorySelect>

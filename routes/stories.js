@@ -11,7 +11,8 @@ router.post("/post", (req, res, next) => {
     content: req.body.content,
     date: Date.now(),
     private: req.body.private,
-    tags: req.body.tags
+    tags: req.body.tags,
+    endDate: req.body.endDate
   });
 
   Story.addStory(newStory, (err, story) => {

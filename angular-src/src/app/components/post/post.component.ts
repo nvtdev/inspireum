@@ -33,7 +33,7 @@ export class PostComponent implements OnInit {
     this.private = false;
     this.newStory = true;
     this.timeframe = false;
-    this.timeframeUnit = "";
+    this.timeframeUnit = "days";
     this.storyService
       .getAllStoriesFromCurrentUser(this.user["username"])
       .subscribe(data => {
@@ -42,10 +42,25 @@ export class PostComponent implements OnInit {
   }
 
   onStorySubmit() {
-    console.log(this.newStory);
-    console.log(this.timeframeUnit);
-    return;
     if (this.newStory) {
+      let endDate = new Date();
+      switch (this.timeframeUnit) {
+        case "days":
+          endDate.setDate(endDate.getDate() + this.timeframeValue);
+          break;
+        case "weeks":
+          endDate.setDate(
+            endDate.getDate() + 7 * parseInt(this.timeframeValue)
+          );
+          break;
+        case "months":
+          endDate.setMonth(endDate.getMonth() + this.timeframeValue);
+          break;
+        case "years":
+          endDate.setFullYear(endDate.getFullYear() + this.timeframeValue);
+          break;
+      }
+
       const story = {
         title: this.title,
         content: this.content,
@@ -53,6 +68,8 @@ export class PostComponent implements OnInit {
         private: this.private,
         tags: this.storyService.tags.join()
       };
+
+      if (this.timeframe) story["endDate"] = endDate;
 
       if (!this.validateService.validateStoryTitle(story)) {
         this.flashMessage.show("Please specify a title", {
@@ -146,7 +163,7 @@ export class PostComponent implements OnInit {
     console.log(story);
   }
 
-  addTimeframe () {
-    console.log('test');
+  addTimeframe() {
+    console.log("test");
   }
 }

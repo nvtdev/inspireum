@@ -25,6 +25,9 @@ const StorySchema = mongoose.Schema({
   },
   tags: {
     type: String
+  },
+  endDate: {
+    type: Date
   }
 });
 

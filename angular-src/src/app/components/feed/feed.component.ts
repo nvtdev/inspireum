@@ -58,50 +58,54 @@ export class FeedComponent implements OnInit {
     });
   }
 
-  buildFeedData () {
+  buildFeedData() {
     this.feedData = [];
 
-    for (let story of this.allStories)
-    {
-      let latestUpdate = null;
+    for (let story of this.allStories) {
+      let latestUpdate = null,
+        feedEntry = null;
 
-      for (let update of this.allUpdates) 
-      {
-        if (update['storyId'] == story['_id'])
-        {
-          latestUpdate = update,
-          latestUpdate.title = story['title'],
-          latestUpdate.author = story['author'],
-          latestUpdate.tags = story['tags'],
-          latestUpdate.activeBackNavigation = true;
+      for (let update of this.allUpdates) {
+        if (update["storyId"] == story["_id"]) {
+          (latestUpdate = update),
+            (latestUpdate.title = story["title"]),
+            (latestUpdate.author = story["author"]),
+            (latestUpdate.tags = story["tags"]),
+            (latestUpdate.activeBackNavigation = true);
         }
       }
 
-      if (latestUpdate)
-        this.feedData.push(latestUpdate)
-      else
-        this.feedData.push(story);
+      if (latestUpdate) feedEntry = latestUpdate;
+      else feedEntry = story;
+
+      if (story["endDate"]) {
+        let startDate = new Date(story["date"]).getTime(),
+          currentDate = new Date().getTime(),
+          endDate = new Date(story["endDate"]).getTime(),
+          totalPeriod = endDate - startDate,
+          passedPeriod = currentDate - startDate;
+
+        feedEntry.progress = parseInt(passedPeriod / totalPeriod * 100);
+      }
+
+      this.feedData.push(feedEntry);
     }
 
     console.log(this.feedData);
   }
 
   addFilterTag(tag) {
-    if (!this.filterTags.includes(tag))
-      this.filterTags.push(tag);
-    this.filterStories('tag');
+    if (!this.filterTags.includes(tag)) this.filterTags.push(tag);
+    this.filterStories("tag");
   }
 
   filterStories(filterBy) {
     let filteredStories = [],
-        searchKey = this.searchKey;
+      searchKey = this.searchKey;
 
-    
-    switch (filterBy) 
-    {
-      case 'tag':
-        if (this.filterTags.length == 0)
-        {
+    switch (filterBy) {
+      case "tag":
+        if (this.filterTags.length == 0) {
           this.allStories = this.originalStories;
         } else {
           for (let story of this.allStories) {
@@ -109,14 +113,14 @@ export class FeedComponent implements OnInit {
               if (story["tags"].includes(tag)) {
                 filteredStories.push(story);
                 break;
-              } 
+              }
             }
           }
           this.allStories = filteredStories;
         }
         break;
 
-      case 'key':
+      case "key":
         for (let story of this.allStories) {
           Object.keys(story).forEach(function(key) {
             if (story[key].toString().includes(searchKey))
@@ -126,44 +130,44 @@ export class FeedComponent implements OnInit {
         this.allStories = filteredStories;
         break;
     }
-    
+
     this.buildFeedData();
   }
 
   removeFilterTag(tag) {
     let index = this.filterTags.indexOf(tag, 0);
     if (index > -1) this.filterTags.splice(index, 1);
-    this.filterStories('tag');
+    this.filterStories("tag");
   }
 
   onSearchChange() {
-    if (this.searchKey.length > 2) 
-      this.filterStories('key');
-    else
-      this.allStories = this.originalStories;
+    if (this.searchKey.length > 2) this.filterStories("key");
+    else this.allStories = this.originalStories;
 
     this.buildFeedData();
   }
 
-  triggerNavigation (updateId, storyId, direction) {
-    let filteredUpdates = this.allUpdates.filter(update => update['storyId'] === storyId),
-        currentUpdateIndex = filteredUpdates.findIndex(update => update['_id'] == updateId),
-        associatedStory = this.allStories.filter(story => story['_id'] === storyId)[0],
-        navigatedUpdate = null;
+  triggerNavigation(updateId, storyId, direction) {
+    let filteredUpdates = this.allUpdates.filter(
+        update => update["storyId"] === storyId
+      ),
+      currentUpdateIndex = filteredUpdates.findIndex(
+        update => update["_id"] == updateId
+      ),
+      associatedStory = this.allStories.filter(
+        story => story["_id"] === storyId
+      )[0],
+      navigatedUpdate = null;
 
-    if (direction == 'back')
-    {
+    if (direction == "back") {
       if (filteredUpdates[currentUpdateIndex - 1])
         navigatedUpdate = filteredUpdates[currentUpdateIndex - 1];
-      else
-      {
+      else {
         navigatedUpdate = associatedStory;
         // the line below is needed so that navigation doesn't disappear once user reaches OG story post
-        navigatedUpdate.storyId = associatedStory['_id'];
+        navigatedUpdate.storyId = associatedStory["_id"];
       }
-    } 
-    else 
-    {
+    } else {
       if (filteredUpdates[currentUpdateIndex + 1])
         navigatedUpdate = filteredUpdates[currentUpdateIndex + 1];
     }
@@ -173,16 +177,19 @@ export class FeedComponent implements OnInit {
       navigatedUpdate.activeBackNavigation = true;
 
     // check for forward arrow
-    let navigatedUpdateIndex = filteredUpdates.findIndex(update => update['_id'] == navigatedUpdate._id);
+    let navigatedUpdateIndex = filteredUpdates.findIndex(
+      update => update["_id"] == navigatedUpdate._id
+    );
     if (filteredUpdates[navigatedUpdateIndex + 1])
       navigatedUpdate.activeForwardNavigation = true;
 
-    if (navigatedUpdate)
-    {
-      let currentUpdateIndexInFeed = this.feedData.findIndex(update => update['_id'] == updateId);
+    if (navigatedUpdate) {
+      let currentUpdateIndexInFeed = this.feedData.findIndex(
+        update => update["_id"] == updateId
+      );
       this.feedData[currentUpdateIndexInFeed] = navigatedUpdate;
     }
-    
+
     console.log(navigatedUpdate);
   }
 }

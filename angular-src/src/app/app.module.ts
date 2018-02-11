@@ -23,9 +23,7 @@ import { AuthGuard } from "./guards/auth.guard";
 import { SidebarComponent } from "./components/sidebar/sidebar.component";
 
 import { TagsComponent } from "./components/tags/tags.component";
-import { StoryComponent } from './components/story/story.component';
-
-import {MatButtonModule, MatCheckboxModule} from '@angular/material';
+import { StoryComponent } from "./components/story/story.component";
 
 const appRoutes: Routes = [
   { path: "", component: HomeComponent },
@@ -54,9 +52,7 @@ const appRoutes: Routes = [
     FormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes),
-    FlashMessagesModule.forRoot(),
-    MatButtonModule, 
-    MatCheckboxModule
+    FlashMessagesModule.forRoot()
   ],
   providers: [
     ValidateService,
