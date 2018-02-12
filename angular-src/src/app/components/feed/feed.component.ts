@@ -44,6 +44,12 @@ export class FeedComponent implements OnInit {
 
     if (localStorage.user) this.user = JSON.parse(localStorage.user);
     let loggedUser = this.user ? this.user["username"] : "";
+    this.mainService.getFollowDataForUser(loggedUser).subscribe(response => {
+      this.user['followings'] = response.data.followings,
+      this.user['followers'] = response.data.followers;
+      console.log(this.user);
+    });
+
     this.storyService.getAllStories(loggedUser).subscribe(data => {
       this.allStories = data.stories;
       this.originalStories = this.allStories;
@@ -85,7 +91,7 @@ export class FeedComponent implements OnInit {
           totalPeriod = endDate - startDate,
           passedPeriod = currentDate - startDate;
 
-        feedEntry.progress = parseInt(passedPeriod / totalPeriod * 100);
+        feedEntry.progress = passedPeriod / totalPeriod * 100;
       }
 
       this.feedData.push(feedEntry);
@@ -191,5 +197,19 @@ export class FeedComponent implements OnInit {
     }
 
     console.log(navigatedUpdate);
+  }
+
+  addFollow(author) {
+    let follow = {
+      follower: this.user['username'],
+      author: author
+    };
+    this.mainService.addFollow(follow).subscribe(data => {
+      console.log(data);
+    });
+  }
+
+  checkFollow(author){
+    return this.user['followings'].includes(author);
   }
 }

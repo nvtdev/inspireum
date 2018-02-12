@@ -24,6 +24,9 @@
           <a [routerLink]="['/register']">Register</a>
         </li>
         <li *ngIf="authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+            <a><span data-toggle="tooltip" class="glyphicon glyphicon-inbox" aria-hidden="true"></span></a>
+        </li>
+        <li *ngIf="authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
           <a [routerLink]="['/profile']">Profile</a>
         </li>
         <li *ngIf="authService.loggedIn()">

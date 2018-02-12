@@ -36,10 +36,12 @@ app.use(cors());
 const users = require("./routes/users");
 const stories = require("./routes/stories");
 const updates = require("./routes/updates");
+const follows = require("./routes/follows");
 
 app.use("/users", users);
 app.use("/stories", stories);
 app.use("/updates", updates);
+app.use("/follows", follows);
 // Routes - End
 
 app.get("/", (req, res) => {
