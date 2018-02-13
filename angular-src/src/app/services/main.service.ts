@@ -13,7 +13,16 @@ export class MainService {
   addFollow(follow) {
     let headers = new Headers();
     headers.append("Content-Type", "application/json");
-    let ep = this.prepEndpoint("follows/post");
+    let ep = this.prepEndpoint("follows/add");
+    return this.http
+      .post(ep, follow, { headers: headers })
+      .map(res => res.json());
+  }
+
+  removeFollow(follow) {
+    let headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    let ep = this.prepEndpoint("follows/remove");
     return this.http
       .post(ep, follow, { headers: headers })
       .map(res => res.json());

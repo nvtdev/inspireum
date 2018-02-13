@@ -37,19 +37,14 @@ export class FeedComponent implements OnInit {
     //     console.log(data);
     //   });
     // }
-    this.filterTag = "";
-    this.filterTags = [];
-    this.searchKey = "";
+    this.filterTag = "",
+    this.filterTags = [],
+    this.searchKey = "",
     this.feedData = [];
 
     if (localStorage.user) this.user = JSON.parse(localStorage.user);
     let loggedUser = this.user ? this.user["username"] : "";
-    this.mainService.getFollowDataForUser(loggedUser).subscribe(response => {
-      this.user['followings'] = response.data.followings,
-      this.user['followers'] = response.data.followers;
-      console.log(this.user);
-    });
-
+    
     this.storyService.getAllStories(loggedUser).subscribe(data => {
       this.allStories = data.stories;
       this.originalStories = this.allStories;
@@ -204,12 +199,36 @@ export class FeedComponent implements OnInit {
       follower: this.user['username'],
       author: author
     };
-    this.mainService.addFollow(follow).subscribe(data => {
-      console.log(data);
+    this.mainService.addFollow(follow).subscribe(response => {
+      this.processFollowData(response.data);
+    });
+  }
+
+  removeFollow(author) {
+    let follow = {
+      follower: this.user['username'],
+      author: author
+    };
+    this.mainService.removeFollow(follow).subscribe(response => {
+      this.processFollowData(response.data);
     });
   }
 
   checkFollow(author){
     return this.user['followings'].includes(author);
+  }
+
+  processFollowData(data) {
+    this.user['followings'] = [], 
+    this.user['followers'] = [];
+    for (let item of data)
+    {
+      if (this.user['username'] == item.follower) 
+        this.user['followings'].push(item.author);
+      else
+        this.user['followers'].push(item.follower);
+    }
+    localStorage.setItem("user", JSON.stringify(this.user));
+    this.buildFeedData();
   }
 }

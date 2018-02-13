@@ -4,7 +4,7 @@ const Follow = require("../models/follow");
 const config = require("../config/database");
 
 // Add follow
-router.post("/post", (req, res, next) => {
+router.post("/add", (req, res, next) => {
     let newFollow = new Follow({
       follower: req.body.follower,
       author: req.body.author,
@@ -18,13 +18,45 @@ router.post("/post", (req, res, next) => {
           msg: "Failed to add follow"
         });
       } else
-        res.json({
-          success: true,
-          msg: "New follow added",
-          follow: follow
+      {
+        Follow.getAllForUser(newFollow.follower, (err, result) => {
+          if (err) {
+            res.json({ success: false, msg: "Failed to add follow." });
+          } else {
+            res.json({ success: true, data: result });
+          }
         });
+      }
     });
   });
+
+// Remove follow
+router.post("/remove", (req, res, next) => {
+  let user = req.headers.user,
+      followToRemove = new Follow({
+        follower: req.body.follower,
+        author: req.body.author,
+      });
+
+  Follow.removeFollow(followToRemove, (err, follow) => {
+    if (err) {
+      console.log(err);
+      res.json({
+        success: false,
+        msg: "Failed to remove follow"
+      });
+    } else
+    {
+      Follow.getAllForUser(followToRemove.follower, (err, result) => {
+        if (err) {
+          res.json({ success: false, msg: "Failed to remove follow." });
+        } else {
+          res.json({ success: true, data: result });
+        }
+      });
+    }
+  });
+});
 
 // Get all authors a user follows
 router.get("/followingsFromUser", (req, res, next) => {
@@ -52,33 +84,15 @@ router.get("/followersForAuthor", (req, res, next) => {
 
 // Get both followings and followers
 router.get("/allForUser", (req, res, next) => {
-  let user = req.headers.user,
-      data = {followings: [], followers: []},
-      error = false;
-
-  console.log(user);
-  Follow.getFollowingsFromUser(user, (err, followings) => {
-    if (!err) {
-      for (let following of followings) {
-        data.followings.push(following.author);
-      }
-      Follow.getFollowersForAuthor(user, (err1, followers) => {
-        if (!err1) {
-          for (let follower of followers) {
-            data.followers.push(follower.follower);
-          }
-          res.json({ success: true, data: data });
-        } 
-        else 
-          error = true;
-      });
-    } 
-    else 
-      error = true;
+  let user = req.headers.user;
+  
+  Follow.getAllForUser(user, (err, result) => {
+    if (err) {
+      res.json({ success: false, msg: "Failed to load data." });
+    } else {
+      res.json({ success: true, data: result });
+    }
   });
-
-  if (error)
-    res.json({ success: false, msg: "Failed to load data." });
 });
 
 module.exports = router;

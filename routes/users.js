@@ -3,6 +3,7 @@ const router = express.Router();
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+const Follow = require("../models/follow");
 const config = require("../config/database");
 
 // Register
@@ -45,14 +46,32 @@ router.post("/authenticate", (req, res, next) => {
           expiresIn: 604800 // 1 week
         });
 
-        res.json({
-          success: true,
-          token: "JWT " + token,
-          user: {
-            id: user._id,
-            name: user.name,
-            username: user.username,
-            email: user.email
+        Follow.getAllForUser(user.username, (err, result) => {
+          if (err) {
+            res.json({ success: false, msg: "Failed to load data." });
+          } else {
+            let followings = [], followers = [];
+
+            for (let item of result)
+            {
+              if (user.username == item.follower) 
+                followings.push(item.author);
+              else
+                followers.push(item.follower);
+            }
+
+            res.json({
+              success: true,
+              token: "JWT " + token,
+              user: {
+                id: user._id,
+                name: user.name,
+                username: user.username,
+                email: user.email,
+                followings: followings,
+                followers: followers
+              }
+            });
           }
         });
       } else {

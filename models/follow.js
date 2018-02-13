@@ -33,6 +33,25 @@ module.exports.getFollowersForAuthor = function(author, callback) {
   );
 };
 
+module.exports.getAllForUser = function (user, callback) {
+  Follow.find(
+    {
+      $or: [
+        { author: user },
+        { follower: user }
+      ]
+    },
+    callback
+  );
+}
+
 module.exports.addFollow = function(follow, callback) {
   follow.save(callback);
+};
+
+module.exports.removeFollow = function(follow, callback) {
+  Follow.deleteOne(
+    { author: follow.author, follower: follow.follower },
+    callback
+  );
 };
