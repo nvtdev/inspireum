@@ -10,16 +10,16 @@ import { Router } from "@angular/router";
   styleUrls: ["./post.component.css"]
 })
 export class PostComponent implements OnInit {
-  title: String;
-  content: String;
-  user: Object;
-  private: Boolean;
-  newStory: Boolean;
-  storiesFromUser: Object;
-  storySelected: Object;
+  title: string;
+  content: string;
+  user: object;
+  private: boolean;
+  newStory: boolean;
+  storiesFromUser: object;
+  storySelected: object;
   timeframe: boolean;
-  timeframeValue: Number;
-  timeframeUnit: String;
+  timeframeValue: number;
+  timeframeUnit: string;
 
   constructor(
     private flashMessage: FlashMessagesService,
@@ -50,7 +50,7 @@ export class PostComponent implements OnInit {
           break;
         case "weeks":
           endDate.setDate(
-            endDate.getDate() + 7 * parseInt(this.timeframeValue)
+            endDate.getDate() + 7 * this.timeframeValue
           );
           break;
         case "months":

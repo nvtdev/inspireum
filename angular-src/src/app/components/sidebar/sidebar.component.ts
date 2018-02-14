@@ -12,7 +12,6 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {}
 
   removeFilterTag(tag) {
-    let index = this.mainService.filterTags.indexOf(tag, 0);
-    if (index > -1) this.mainService.filterTags.splice(index, 1);
+    
   }
 }
