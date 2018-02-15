@@ -27,36 +27,45 @@ export class FeedComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // if (localStorage.user) {
-    //   this.user = JSON.parse(localStorage.user);
-    //   this.storyService.getAllStories(this.user['username']).subscribe(data => {
-    //     console.log(data);
-    //   });
-    // } else {
-    //   this.storyService.getAllStories('').subscribe(data => {
-    //     console.log(data);
-    //   });
-    // }
+    this.setInitialValues();       
+    this.loadData();
+  }
+
+  setInitialValues() {
     this.filterTag = "",
     this.filterTags = [],
     this.searchKey = "",
     this.feedData = [];
 
-    if (localStorage.user) this.user = JSON.parse(localStorage.user);
+    this.user = this.mainService.getUser();
+  }
+
+  loadData() {
     let loggedUser = this.user ? this.user["username"] : "";
     
-    this.storyService.getAllStories(loggedUser).subscribe(data => {
-      this.allStories = data.stories;
-      this.originalStories = this.allStories;
-      console.log(this.allStories);
+    if (!this.storyService.allStories) {
+      this.storyService.fetchAllStories(loggedUser).subscribe(data => {
+        this.allStories = data.stories,
+        this.storyService.allStories = data.stories,
+        this.originalStories = this.allStories;
+        console.log(this.allStories);
+  
+        this.storyService.fetchAllUpdates(loggedUser).subscribe(data => {
+          this.allUpdates = data.updates,
+          this.storyService.allUpdates = data.updates;
+          
+          console.log(this.allUpdates);
+  
+          this.buildFeedData();
+        });
+      });  
+    } else {
+      this.allStories = this.storyService.allStories,
+      this.originalStories = this.allStories,
+      this.allUpdates = this.storyService.allUpdates;
 
-      this.storyService.getAllUpdates(loggedUser).subscribe(data => {
-        this.allUpdates = data.updates;
-        console.log(this.allUpdates);
-
-        this.buildFeedData();
-      });
-    });
+      this.buildFeedData();
+    }
   }
 
   buildFeedData() {
@@ -91,8 +100,6 @@ export class FeedComponent implements OnInit {
 
       this.feedData.push(feedEntry);
     }
-
-    console.log(this.feedData);
   }
 
   addFilterTag(tag) {

@@ -5,9 +5,27 @@ import "rxjs/add/operator/map";
 @Injectable()
 export class MainService {
   isDev: boolean;
+  user: Object;
 
   constructor(private http: Http) {
     this.isDev = true; // Change to false before deployment
+  }
+
+  getUserByUsername(username) {
+    let headers = new Headers();
+    headers.append('Content-Type','application/json');
+    headers.append("user", username);
+    let ep = this.prepEndpoint('users/profile');
+    return this.http.get(ep, {headers: headers})
+      .map(res => res.json());
+  }
+  
+  getUser() {
+    return this.user;
+  }
+
+  setUser(user) {
+    this.user = user;
   }
 
   addFollow(follow) {

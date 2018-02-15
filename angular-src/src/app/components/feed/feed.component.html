@@ -3,7 +3,7 @@
     <div class="story-header">
       <h2 class="story-title">{{story.title}}</h2>
       <div class="story-author">
-        by {{story.author}} 
+        by <a [routerLink]="['/profile', story.author]">{{story.author}}</a>
         <div *ngIf="user" class="story-follow-container">
           <div class="story-follow" *ngIf="user.username != story.author">
             <button (click)="addFollow(story.author)" *ngIf="!checkFollow(story.author)" type="button" class="btn btn-info btn-xs">Follow {{story.author}}</button>

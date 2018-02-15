@@ -25,12 +25,14 @@ import { SidebarComponent } from "./components/sidebar/sidebar.component";
 
 import { TagsComponent } from "./components/tags/tags.component";
 import { StoryComponent } from "./components/story/story.component";
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 const appRoutes: Routes = [
   { path: "", component: HomeComponent },
+  { path: "dashboard", component: DashboardComponent },
   { path: "register", component: RegisterComponent },
   { path: "login", component: LoginComponent },
-  { path: "profile", component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: "profile/:nickname", component: ProfileComponent, canActivate: [AuthGuard] },
   { path: "post", component: PostComponent, canActivate: [AuthGuard] }
 ];
 
@@ -46,7 +48,8 @@ const appRoutes: Routes = [
     SidebarComponent,
     PostComponent,
     TagsComponent,
-    StoryComponent
+    StoryComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
