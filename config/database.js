@@ -1,4 +1,4 @@
 module.exports = {
-  database: "mongodb://localhost:27017/goals",
+  database: "mongodb://nvtdev:flamini84@ds157538.mlab.com:57538/inspireum",
   secret: "yoursecret"
 };
