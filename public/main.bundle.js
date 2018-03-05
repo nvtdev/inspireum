@@ -66,16 +66,16 @@ var AppComponent = /** @class */ (function () {
     function AppComponent(mainService, storyService) {
         this.mainService = mainService;
         this.storyService = storyService;
-        this.title = 'app';
+        this.title = "app";
     }
     AppComponent.prototype.ngOnInit = function () {
         if (localStorage.user)
-            this.mainService.setUser(JSON.parse(localStorage.user));
-        this.storyService.fetchAllStories(this.mainService.user['username']);
+            this.mainService.setUser(JSON.parse(localStorage.user)),
+                this.storyService.fetchAllStories(this.mainService.user["username"]);
     };
     AppComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'app-root',
+            selector: "app-root",
             template: __webpack_require__("../../../../../src/app/app.component.html"),
             styles: [__webpack_require__("../../../../../src/app/app.component.css")]
         }),
@@ -1500,7 +1500,7 @@ var AuthService = /** @class */ (function () {
         headers.append("Content-Type", "application/json");
         var ep = this.prepEndpoint("users/register");
         return this.http
-            .post(ep, user, { headers: headers })
+            .post("users/register", user, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthService.prototype.authenticateUser = function (user) {
@@ -1508,7 +1508,7 @@ var AuthService = /** @class */ (function () {
         headers.append("Content-Type", "application/json");
         var ep = this.prepEndpoint("users/authenticate");
         return this.http
-            .post(ep, user, {
+            .post("users/authenticate", user, {
             headers: headers
         })
             .map(function (res) { return res.json(); });
@@ -1520,7 +1520,7 @@ var AuthService = /** @class */ (function () {
         headers.append("Content-Type", "application/json");
         var ep = this.prepEndpoint("users/profile");
         return this.http
-            .get(ep, {
+            .get("users/profile", {
             headers: headers
         })
             .map(function (res) { return res.json(); });
@@ -1591,10 +1591,11 @@ var MainService = /** @class */ (function () {
     }
     MainService.prototype.getUserByUsername = function (username) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
-        headers.append('Content-Type', 'application/json');
+        headers.append("Content-Type", "application/json");
         headers.append("user", username);
-        var ep = this.prepEndpoint('users/profile');
-        return this.http.get(ep, { headers: headers })
+        var ep = this.prepEndpoint("users/profile");
+        return this.http
+            .get("users/profile", { headers: headers })
             .map(function (res) { return res.json(); });
     };
     MainService.prototype.getUser = function () {
@@ -1608,7 +1609,7 @@ var MainService = /** @class */ (function () {
         headers.append("Content-Type", "application/json");
         var ep = this.prepEndpoint("follows/add");
         return this.http
-            .post(ep, follow, { headers: headers })
+            .post("follows/add", follow, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     MainService.prototype.removeFollow = function (follow) {
@@ -1616,7 +1617,7 @@ var MainService = /** @class */ (function () {
         headers.append("Content-Type", "application/json");
         var ep = this.prepEndpoint("follows/remove");
         return this.http
-            .post(ep, follow, { headers: headers })
+            .post("follows/remove", follow, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     // get both followings and followers for user
@@ -1625,7 +1626,9 @@ var MainService = /** @class */ (function () {
         headers.append("Content-Type", "application/json");
         headers.append("user", user);
         var ep = this.prepEndpoint("follows/allForUser");
-        return this.http.get(ep, { headers: headers }).map(function (res) { return res.json(); });
+        return this.http
+            .get("follows/allForUser", { headers: headers })
+            .map(function (res) { return res.json(); });
     };
     // get all authors a user follows
     MainService.prototype.getFollowingsFromUser = function (user) {
@@ -1633,7 +1636,9 @@ var MainService = /** @class */ (function () {
         headers.append("Content-Type", "application/json");
         headers.append("user", user);
         var ep = this.prepEndpoint("follows/followingsFromUser");
-        return this.http.get(ep, { headers: headers }).map(function (res) { return res.json(); });
+        return this.http
+            .get("follows/followingsFromUser", { headers: headers })
+            .map(function (res) { return res.json(); });
     };
     MainService.prototype.prepEndpoint = function (ep) {
         if (this.isDev) {
@@ -1688,7 +1693,7 @@ var StoryService = /** @class */ (function () {
         headers.append("Content-Type", "application/json");
         var ep = this.prepEndpoint("stories/post");
         return this.http
-            .post(ep, story, { headers: headers })
+            .post("stories/post", story, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     StoryService.prototype.addUpdate = function (update) {
@@ -1696,7 +1701,7 @@ var StoryService = /** @class */ (function () {
         headers.append("Content-Type", "application/json");
         var ep = this.prepEndpoint("updates/post");
         return this.http
-            .post(ep, update, { headers: headers })
+            .post("updates/post", update, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     StoryService.prototype.fetchAllStories = function (loggedUser) {
@@ -1704,7 +1709,9 @@ var StoryService = /** @class */ (function () {
         headers.append("Content-Type", "application/json");
         headers.append("loggeduser", loggedUser);
         var ep = this.prepEndpoint("stories/all");
-        return this.http.get(ep, { headers: headers }).map(function (res) { return res.json(); });
+        return this.http
+            .get("stories/all", { headers: headers })
+            .map(function (res) { return res.json(); });
         // this.http
         //   .get(ep, { headers: headers })
         //   .map(res => res.json())
@@ -1717,21 +1724,27 @@ var StoryService = /** @class */ (function () {
         headers.append("Content-Type", "application/json");
         headers.append("loggeduser", loggedUser);
         var ep = this.prepEndpoint("updates/all");
-        return this.http.get(ep, { headers: headers }).map(function (res) { return res.json(); });
+        return this.http
+            .get("updates/all", { headers: headers })
+            .map(function (res) { return res.json(); });
     };
     StoryService.prototype.getAllStoriesFromUser = function (username) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append("Content-Type", "application/json");
         headers.append("username", username);
         var ep = this.prepEndpoint("stories/allFromUser");
-        return this.http.get(ep, { headers: headers }).map(function (res) { return res.json(); });
+        return this.http
+            .get("stories/allFromUser", { headers: headers })
+            .map(function (res) { return res.json(); });
     };
     StoryService.prototype.getAllStoriesFromCurrentUser = function (username) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append("Content-Type", "application/json");
         headers.append("username", username);
         var ep = this.prepEndpoint("stories/allFromCurrentUser");
-        return this.http.get(ep, { headers: headers }).map(function (res) { return res.json(); });
+        return this.http
+            .get("stories/allFromCurrentUser", { headers: headers })
+            .map(function (res) { return res.json(); });
     };
     StoryService.prototype.prepEndpoint = function (ep) {
         if (this.isDev) {
