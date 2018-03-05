@@ -12,6 +12,11 @@
   display: inline;
 }
 
+.story-controls {
+  display: inline;
+  float: right;
+}
+
 .story-author {
   display: inline;
   font-size: 22px;
@@ -77,3 +82,7 @@
   cursor: pointer;
 }
 
+.progress-bar-days-left {
+  position: absolute;
+  text-align: center;
+}

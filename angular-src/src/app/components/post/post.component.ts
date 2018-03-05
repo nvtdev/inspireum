@@ -46,7 +46,7 @@ export class PostComponent implements OnInit {
       let endDate = new Date();
       switch (this.timeframeUnit) {
         case "days":
-          endDate.setDate(endDate.getDate() + this.timeframeValue);
+          endDate.setDate(endDate.getDate() + parseInt(this.timeframeValue));
           break;
         case "weeks":
           endDate.setDate(

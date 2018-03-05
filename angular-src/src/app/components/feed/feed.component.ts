@@ -85,7 +85,14 @@ export class FeedComponent implements OnInit {
           totalPeriod = endDate - startDate,
           passedPeriod = currentDate - startDate;
 
-        feedEntry.progress = parseInt(passedPeriod / totalPeriod * 100);
+        (feedEntry.progress = passedPeriod / totalPeriod * 100),
+          (feedEntry.daysLeft = Math.floor((endDate - currentDate) / 86400000));
+
+        console.log(feedEntry);
+
+        if (feedEntry.progress < 10) feedEntry.progressColor = "success";
+        else if (feedEntry.progress < 75) feedEntry.progressColor = "info";
+        else feedEntry.progressColor = "danger";
       }
 
       this.feedData.push(feedEntry);

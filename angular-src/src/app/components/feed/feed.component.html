@@ -3,27 +3,31 @@
     <div class="stomkkjkry-header">
       <h2 class="story-title">{{story.title}}</h2>
       <div class="story-author">by {{story.author}}</div>
-
-    </div>
-    <p>
-      {{story.content.substr(0, 500)}} ..
-      <a href="">Read full</a>
-    </p>
-    <div class="story-controls">
-      <div class="story-navigation" *ngIf="story.storyId">
-        <span *ngIf="story.activeBackNavigation" class="glyphicon glyphicon-chevron-left active" aria-hidden="true" (click)="triggerNavigation(story._id, story.storyId, 'back')"></span>
-        <span *ngIf="!story.activeBackNavigation" class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span *ngIf="story.activeForwardNavigation" class="glyphicon glyphicon-chevron-right active" aria-hidden="true" (click)="triggerNavigation(story._id, story.storyId, 'forward')"></span>
-        <span *ngIf="!story.activeForwardNavigation" class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-      </div>
-      <div class="progress" *ngIf="story.progress">
-        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0"
-          aria-valuemax="100" [ngStyle]="{width: story.progress + '%'}">
-          <span class="sr-only">40% Complete (success)</span>
+      <div class="story-controls">
+        <div class="story-navigation" *ngIf="story.storyId">
+          <span data-toggle="tooltip" title="See previous post" *ngIf="story.activeBackNavigation" class="glyphicon glyphicon-chevron-left active"
+            aria-hidden="true" (click)="triggerNavigation(story._id, story.storyId, 'back')"></span>
+          <span data-toggle="tooltip" title="See previous post" *ngIf="!story.activeBackNavigation" class="glyphicon glyphicon-chevron-left"
+            aria-hidden="true"></span>
+          <span data-toggle="tooltip" title="See next post" *ngIf="story.activeForwardNavigation" class="glyphicon glyphicon-chevron-right active"
+            aria-hidden="true" (click)="triggerNavigation(story._id, story.storyId, 'forward')"></span>
+          <span data-toggle="tooltip" title="See next post" *ngIf="!story.activeForwardNavigation" class="glyphicon glyphicon-chevron-right"
+            aria-hidden="true"></span>
         </div>
       </div>
+      <p>
+        {{ story.content }}
+      </p>
+      <div class="progress" *ngIf="story.progress">
+        <div class="progress-bar progress-bar-{{story.progressColor}} progress-bar-striped active" role="progressbar" aria-valuenow="40"
+          aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ width: story.progress + '%' }">
+          <!-- <span class="sr-only">40% Complete (success)</span> -->
+        </div>
+        <span [ngStyle]="{ width: (100 - story.progress) + '%' }" class="progress-bar-days-left">{{story.daysLeft}} days left</span>
+      </div>
       <div class="story-tags" *ngIf="story.tags != ''">
-        <div class="story-tags-entry" *ngFor="let tag of story.tags.split(',')" (click)="addFilterTag(tag)">
+        <div data-toggle="tooltip" title="Click to filter using this tag" class="story-tags-entry" *ngFor="let tag of story.tags.split(',')"
+          (click)="addFilterTag(tag)">
           {{tag}}
         </div>
       </div>
