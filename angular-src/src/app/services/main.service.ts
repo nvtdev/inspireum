@@ -13,13 +13,14 @@ export class MainService {
 
   getUserByUsername(username) {
     let headers = new Headers();
-    headers.append('Content-Type','application/json');
+    headers.append("Content-Type", "application/json");
     headers.append("user", username);
-    let ep = this.prepEndpoint('users/profile');
-    return this.http.get(ep, {headers: headers})
+    let ep = this.prepEndpoint("users/profile");
+    return this.http
+      .get("users/profile", { headers: headers })
       .map(res => res.json());
   }
-  
+
   getUser() {
     return this.user;
   }
@@ -33,7 +34,7 @@ export class MainService {
     headers.append("Content-Type", "application/json");
     let ep = this.prepEndpoint("follows/add");
     return this.http
-      .post(ep, follow, { headers: headers })
+      .post("follows/add", follow, { headers: headers })
       .map(res => res.json());
   }
 
@@ -42,7 +43,7 @@ export class MainService {
     headers.append("Content-Type", "application/json");
     let ep = this.prepEndpoint("follows/remove");
     return this.http
-      .post(ep, follow, { headers: headers })
+      .post("follows/remove", follow, { headers: headers })
       .map(res => res.json());
   }
 
@@ -52,7 +53,9 @@ export class MainService {
     headers.append("Content-Type", "application/json");
     headers.append("user", user);
     let ep = this.prepEndpoint("follows/allForUser");
-    return this.http.get(ep, { headers: headers }).map(res => res.json());
+    return this.http
+      .get("follows/allForUser", { headers: headers })
+      .map(res => res.json());
   }
 
   // get all authors a user follows
@@ -61,7 +64,9 @@ export class MainService {
     headers.append("Content-Type", "application/json");
     headers.append("user", user);
     let ep = this.prepEndpoint("follows/followingsFromUser");
-    return this.http.get(ep, { headers: headers }).map(res => res.json());
+    return this.http
+      .get("follows/followingsFromUser", { headers: headers })
+      .map(res => res.json());
   }
 
   prepEndpoint(ep) {
@@ -71,5 +76,4 @@ export class MainService {
       return "http://localhost:3000/" + ep;
     }
   }
-
 }

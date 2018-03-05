@@ -23,7 +23,7 @@ export class StoryService {
     headers.append("Content-Type", "application/json");
     let ep = this.prepEndpoint("stories/post");
     return this.http
-      .post(ep, story, { headers: headers })
+      .post("stories/post", story, { headers: headers })
       .map(res => res.json());
   }
 
@@ -32,7 +32,7 @@ export class StoryService {
     headers.append("Content-Type", "application/json");
     let ep = this.prepEndpoint("updates/post");
     return this.http
-      .post(ep, update, { headers: headers })
+      .post("updates/post", update, { headers: headers })
       .map(res => res.json());
   }
 
@@ -41,7 +41,9 @@ export class StoryService {
     headers.append("Content-Type", "application/json");
     headers.append("loggeduser", loggedUser);
     let ep = this.prepEndpoint("stories/all");
-    return this.http.get(ep, { headers: headers }).map(res => res.json());
+    return this.http
+      .get("stories/all", { headers: headers })
+      .map(res => res.json());
     // this.http
     //   .get(ep, { headers: headers })
     //   .map(res => res.json())
@@ -55,7 +57,9 @@ export class StoryService {
     headers.append("Content-Type", "application/json");
     headers.append("loggeduser", loggedUser);
     let ep = this.prepEndpoint("updates/all");
-    return this.http.get(ep, { headers: headers }).map(res => res.json());
+    return this.http
+      .get("updates/all", { headers: headers })
+      .map(res => res.json());
   }
 
   getAllStoriesFromUser(username) {
@@ -63,7 +67,9 @@ export class StoryService {
     headers.append("Content-Type", "application/json");
     headers.append("username", username);
     let ep = this.prepEndpoint("stories/allFromUser");
-    return this.http.get(ep, { headers: headers }).map(res => res.json());
+    return this.http
+      .get("stories/allFromUser", { headers: headers })
+      .map(res => res.json());
   }
 
   getAllStoriesFromCurrentUser(username) {
@@ -71,7 +77,9 @@ export class StoryService {
     headers.append("Content-Type", "application/json");
     headers.append("username", username);
     let ep = this.prepEndpoint("stories/allFromCurrentUser");
-    return this.http.get(ep, { headers: headers }).map(res => res.json());
+    return this.http
+      .get("stories/allFromCurrentUser", { headers: headers })
+      .map(res => res.json());
   }
 
   prepEndpoint(ep) {
