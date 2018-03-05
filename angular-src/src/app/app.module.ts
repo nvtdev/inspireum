@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { RouterModule, Routes } from "@angular/router";
+// import { PopoverModule } from 'ng2-popover';
 
 import { AppComponent } from "./app.component";
 import { NavbarComponent } from "./components/navbar/navbar.component";
@@ -24,12 +25,18 @@ import { SidebarComponent } from "./components/sidebar/sidebar.component";
 
 import { TagsComponent } from "./components/tags/tags.component";
 import { StoryComponent } from "./components/story/story.component";
+import { DashboardComponent } from "./components/dashboard/dashboard.component";
 
 const appRoutes: Routes = [
   { path: "", component: HomeComponent },
+  { path: "dashboard", component: DashboardComponent },
   { path: "register", component: RegisterComponent },
   { path: "login", component: LoginComponent },
-  { path: "profile", component: ProfileComponent, canActivate: [AuthGuard] },
+  {
+    path: "profile/:nickname",
+    component: ProfileComponent,
+    canActivate: [AuthGuard]
+  },
   { path: "post", component: PostComponent, canActivate: [AuthGuard] }
 ];
 
@@ -45,7 +52,8 @@ const appRoutes: Routes = [
     SidebarComponent,
     PostComponent,
     TagsComponent,
-    StoryComponent
+    StoryComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -53,6 +61,7 @@ const appRoutes: Routes = [
     HttpModule,
     RouterModule.forRoot(appRoutes),
     FlashMessagesModule.forRoot()
+    // PopoverModule
   ],
   providers: [
     ValidateService,

@@ -1,8 +1,17 @@
 <div class="col-xs-12 col-sm-9" *ngIf="allStories">
   <div class="row story-entry" *ngFor="let story of feedData">
-    <div class="stomkkjkry-header">
+    <div class="story-header">
       <h2 class="story-title">{{story.title}}</h2>
-      <div class="story-author">by {{story.author}}</div>
+      <div class="story-author">
+        by
+        <a [routerLink]="['/profile', story.author]">{{story.author}}</a>
+        <div *ngIf="user" class="story-follow-container">
+          <div class="story-follow" *ngIf="user.username != story.author">
+            <button (click)="addFollow(story.author)" *ngIf="!checkFollow(story.author)" type="button" class="btn btn-info btn-xs">Follow {{story.author}}</button>
+            <button (click)="removeFollow(story.author)" *ngIf="checkFollow(story.author)" type="button" class="btn btn-default btn-xs">Unfollow {{story.author}}</button>
+          </div>
+        </div>
+      </div>
       <div class="story-controls">
         <div class="story-navigation" *ngIf="story.storyId">
           <span data-toggle="tooltip" title="See previous post" *ngIf="story.activeBackNavigation" class="glyphicon glyphicon-chevron-left active"

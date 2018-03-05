@@ -27,35 +27,45 @@ export class FeedComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // if (localStorage.user) {
-    //   this.user = JSON.parse(localStorage.user);
-    //   this.storyService.getAllStories(this.user['username']).subscribe(data => {
-    //     console.log(data);
-    //   });
-    // } else {
-    //   this.storyService.getAllStories('').subscribe(data => {
-    //     console.log(data);
-    //   });
-    // }
-    this.filterTag = "";
-    this.filterTags = [];
-    this.searchKey = "";
-    this.feedData = [];
+    this.setInitialValues();
+    this.loadData();
+  }
 
-    if (localStorage.user) this.user = JSON.parse(localStorage.user);
+  setInitialValues() {
+    (this.filterTag = ""),
+      (this.filterTags = []),
+      (this.searchKey = ""),
+      (this.feedData = []);
+
+    this.user = this.mainService.getUser();
+  }
+
+  loadData() {
     let loggedUser = this.user ? this.user["username"] : "";
-    this.storyService.getAllStories(loggedUser).subscribe(data => {
-      this.allStories = data.stories;
-      this.originalStories = this.allStories;
-      console.log(this.allStories);
 
-      this.storyService.getAllUpdates(loggedUser).subscribe(data => {
-        this.allUpdates = data.updates;
-        console.log(this.allUpdates);
+    if (!this.storyService.allStories) {
+      this.storyService.fetchAllStories(loggedUser).subscribe(data => {
+        (this.allStories = data.stories),
+          (this.storyService.allStories = data.stories),
+          (this.originalStories = this.allStories);
+        console.log(this.allStories);
 
-        this.buildFeedData();
+        this.storyService.fetchAllUpdates(loggedUser).subscribe(data => {
+          (this.allUpdates = data.updates),
+            (this.storyService.allUpdates = data.updates);
+
+          console.log(this.allUpdates);
+
+          this.buildFeedData();
+        });
       });
-    });
+    } else {
+      (this.allStories = this.storyService.allStories),
+        (this.originalStories = this.allStories),
+        (this.allUpdates = this.storyService.allUpdates);
+
+      this.buildFeedData();
+    }
   }
 
   buildFeedData() {
@@ -97,8 +107,6 @@ export class FeedComponent implements OnInit {
 
       this.feedData.push(feedEntry);
     }
-
-    console.log(this.feedData);
   }
 
   addFilterTag(tag) {
@@ -198,5 +206,42 @@ export class FeedComponent implements OnInit {
     }
 
     console.log(navigatedUpdate);
+  }
+
+  addFollow(author) {
+    let follow = {
+      follower: this.user["username"],
+      author: author
+    };
+    this.mainService.addFollow(follow).subscribe(response => {
+      this.processFollowData(response.data);
+    });
+  }
+
+  removeFollow(author) {
+    let follow = {
+      follower: this.user["username"],
+      author: author
+    };
+    this.mainService.removeFollow(follow).subscribe(response => {
+      this.processFollowData(response.data);
+    });
+  }
+
+  checkFollow(author) {
+    if (this.user["followings"])
+      return this.user["followings"].includes(author);
+    else return false;
+  }
+
+  processFollowData(data) {
+    (this.user["followings"] = []), (this.user["followers"] = []);
+    for (let item of data) {
+      if (this.user["username"] == item.follower)
+        this.user["followings"].push(item.author);
+      else this.user["followers"].push(item.follower);
+    }
+    localStorage.setItem("user", JSON.stringify(this.user));
+    this.buildFeedData();
   }
 }

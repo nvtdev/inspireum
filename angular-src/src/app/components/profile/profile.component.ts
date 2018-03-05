@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { AuthService } from "../../services/auth.service";
+import { MainService } from "../../services/main.service";
 import { Router } from "@angular/router";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: "app-profile",
@@ -8,19 +9,33 @@ import { Router } from "@angular/router";
   styleUrls: ["./profile.component.css"]
 })
 export class ProfileComponent implements OnInit {
-  user: Object;
+  sessionUser: Object;
+  profileUser: Object;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private mainService: MainService, 
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.authService.getProfile().subscribe(
-      profile => {
-        this.user = profile.user;
-      },
-      err => {
-        console.log(err);
-        return false;
-      }
-    );
+    this.sessionUser = this.mainService.getUser();
+    this.loadUserData();
+  }
+
+  loadUserData() {
+    this.route.params.subscribe(params => {
+      if (params['nickname'] != this.mainService.user['username'])
+      {
+        this.mainService.getUserByUsername(params['nickname']).subscribe(data => {
+          this.profileUser = data.user;
+        },
+        err => {
+          console.log(err);
+          return false;
+        });
+      } else 
+        this.profileUser = this.sessionUser;
+    });
   }
 }

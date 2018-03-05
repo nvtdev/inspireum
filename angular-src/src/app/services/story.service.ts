@@ -6,6 +6,8 @@ import "rxjs/add/operator/map";
 export class StoryService {
   isDev: boolean;
   tags: Array<String>;
+  allStories: Array<Object>;
+  allUpdates: Array<Object>;
 
   constructor(private http: Http) {
     this.isDev = true; // Change to false before deployment
@@ -34,15 +36,21 @@ export class StoryService {
       .map(res => res.json());
   }
 
-  getAllStories(loggedUser) {
+  fetchAllStories(loggedUser) {
     let headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("loggeduser", loggedUser);
     let ep = this.prepEndpoint("stories/all");
     return this.http.get(ep, { headers: headers }).map(res => res.json());
+    // this.http
+    //   .get(ep, { headers: headers })
+    //   .map(res => res.json())
+    //   .subscribe(data => {
+    //     this.allStories = data.stories;
+    //   });
   }
 
-  getAllUpdates(loggedUser) {
+  fetchAllUpdates(loggedUser) {
     let headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("loggeduser", loggedUser);

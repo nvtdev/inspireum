@@ -2,3 +2,8 @@
   position: relative;
   margin-bottom: 20px;
 }
+
+.popover {
+  top: 40px;
+  left: -32px;
+}

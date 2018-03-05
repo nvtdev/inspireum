@@ -24,6 +24,10 @@
   margin-left: 10px;
 }
 
+.story-follow-container, .story-follow {
+  display: inline;
+}
+
 .story-navigation {
   display: inline;
   float: left;

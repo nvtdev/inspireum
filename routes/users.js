@@ -3,6 +3,7 @@ const router = express.Router();
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+const Follow = require("../models/follow");
 const config = require("../config/database");
 
 // Register
@@ -45,14 +46,32 @@ router.post("/authenticate", (req, res, next) => {
           expiresIn: 604800 // 1 week
         });
 
-        res.json({
-          success: true,
-          token: "JWT " + token,
-          user: {
-            id: user._id,
-            name: user.name,
-            username: user.username,
-            email: user.email
+        Follow.getAllForUser(user.username, (err, result) => {
+          if (err) {
+            res.json({ success: false, msg: "Failed to load data." });
+          } else {
+            let followings = [], followers = [];
+
+            for (let item of result)
+            {
+              if (user.username == item.follower) 
+                followings.push(item.author);
+              else
+                followers.push(item.follower);
+            }
+
+            res.json({
+              success: true,
+              token: "JWT " + token,
+              user: {
+                id: user._id,
+                name: user.name,
+                username: user.username,
+                email: user.email,
+                followings: followings,
+                followers: followers
+              }
+            });
           }
         });
       } else {
@@ -65,9 +84,45 @@ router.post("/authenticate", (req, res, next) => {
 // Profile
 router.get(
   "/profile",
-  passport.authenticate("jwt", { session: false }),
+  // passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    res.json({ user: req.user });
+    // res.json({ user: req.user });
+
+    const username = req.headers.user;
+    console.log(username);
+  
+    User.getUserByUsername(username, (err, user) => {
+      if (err) throw err;
+  
+      if (!user) return res.json({ success: false, msg: "User not found." });
+  
+      Follow.getAllForUser(user.username, (err, result) => {
+        if (err) {
+          res.json({ success: false, msg: "Failed to load data." });
+        } else {
+          let followings = [], followers = [];
+
+          for (let item of result)
+          {
+            if (user.username == item.follower) 
+              followings.push(item.author);
+            else
+              followers.push(item.follower);
+          }
+
+          res.json({
+            success: true,
+            user: {
+              name: user.name,
+              username: user.username,
+              followings: followings,
+              followers: followers
+            }
+          });
+        }
+      });
+    });
+
   }
 );
 
