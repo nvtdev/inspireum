@@ -43,7 +43,7 @@ export class PostComponent implements OnInit {
 
   onStorySubmit() {
     if (this.newStory) {
-      let endDate = new Date();
+      let endDate = new Date();;
       switch (this.timeframeUnit) {
         case "days":
           endDate.setDate(endDate.getDate() + this.timeframeValue);

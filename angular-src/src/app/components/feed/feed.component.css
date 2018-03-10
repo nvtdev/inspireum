@@ -1,7 +1,20 @@
+.feed-controls {
+  margin-bottom: 10px;
+}
+
+.feed-controls .col-sm-6 {
+  padding: 0px;
+}
+
 .story-entry {
   margin-bottom: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid lightgrey;
+}
+
+.row {
+  margin-right: 0px;
+  margin-left: 0px;
 }
 
 .story-header {

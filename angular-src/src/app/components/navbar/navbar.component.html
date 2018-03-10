@@ -15,21 +15,20 @@
         <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
           <a [routerLink]="['/']">Feed</a>
         </li>
-        <!-- <li *ngIf="authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
-          <a [routerLink]="['/dashboard']">Dashboard</a>
-        </li> -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
+          <li *ngIf="authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+            <a>
+              <span data-toggle="tooltip" class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
+            </a>
+          </li>
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+            <a [routerLink]="['/post']"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> Post</a></li>
         <li *ngIf="!authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
           <a [routerLink]="['/login']">Login</a>
         </li>
         <li *ngIf="!authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
           <a [routerLink]="['/register']">Register</a>
-        </li>
-        <li *ngIf="authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
-          <a>
-            <span data-toggle="tooltip" class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
-          </a>
         </li>
         <li *ngIf="authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
           <a [routerLink]="['/profile', user.username]">Profile</a>
@@ -39,7 +38,5 @@
         </li>
       </ul>
     </div>
-    <!-- /.nav-collapse -->
   </div>
-  <!-- /.container -->
 </nav>

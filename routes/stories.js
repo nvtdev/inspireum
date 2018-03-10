@@ -49,6 +49,9 @@ router.get("/all", (req, res, next) => {
     if (err) {
       res.json({ success: false, msg: "Failed to load stories." });
     } else {
+      var aggregatedStories = stories.aggregate([{
+        
+      }])
       res.json({ success: true, stories: stories });
     }
   });

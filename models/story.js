@@ -72,3 +72,7 @@ module.exports.getAllStories = function(loggedUser, callback) {
 module.exports.addStory = function(story, callback) {
   story.save(callback);
 };
+
+module.exports.getTrendingTags = function (callback) {
+  
+}

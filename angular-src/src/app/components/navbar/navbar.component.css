@@ -1,6 +1,21 @@
 .navbar {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
+  background: white;
+  border: none;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+  color: black;
+}
+
+.navbar-inverse .navbar-nav>.active>a {
+  color: white;
+}
+
+.navbar-inverse .navbar-brand,
+.navbar-inverse .navbar-brand:focus {
+  color: black;
 }
 
 .popover {

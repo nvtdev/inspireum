@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { RouterModule, Routes } from "@angular/router";
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 // import { PopoverModule } from 'ng2-popover';
 
 import { AppComponent } from "./app.component";
@@ -60,7 +61,9 @@ const appRoutes: Routes = [
     FormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes),
-    FlashMessagesModule.forRoot()
+    FlashMessagesModule.forRoot(),
+    FroalaEditorModule.forRoot(), 
+    FroalaViewModule.forRoot()
     // PopoverModule
   ],
   providers: [
